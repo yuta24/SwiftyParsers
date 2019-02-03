@@ -4,7 +4,7 @@ import XCTest
 final class ParserTests: XCTestCase {
     func testMonadic1() {
         let p1 = Parser<Character> {
-            return separete($0)
+            return separate($0)
         }
         let p2 = fmap(p1) { (c) -> Int in
             return Int(String(c)) ?? 0
@@ -27,10 +27,10 @@ final class ParserTests: XCTestCase {
 
     func testMonadic3() {
         let p1 = Parser<Character> {
-            return separete($0)
+            return separate($0)
         }
         let p2 = Parser<(Character) -> Int> {
-            if let (x, xs) = separete($0), let _ = Int(String(x)) {
+            if let (x, xs) = separate($0), let _ = Int(String(x)) {
                 return ({ Int(String($0)) ?? 0  }, xs)
             } else {
                 return nil
@@ -46,11 +46,11 @@ final class ParserTests: XCTestCase {
 
     func testMonadic4() {
         let p1 = Parser<Character> {
-            return separete($0)
+            return separate($0)
         }
         let p2 = { (c: Character) -> Parser<Int> in
             return Parser<Int> {
-                if let (x, xs) = separete($0), let i = Int(String(x)) {
+                if let (x, xs) = separate($0), let i = Int(String(x)) {
                     return (i, xs)
                 } else {
                     return nil

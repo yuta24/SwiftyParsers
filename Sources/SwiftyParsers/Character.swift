@@ -1,6 +1,6 @@
 import Foundation
 
-func separete(_ xs: String) -> (Character, String)? {
+func separate(_ xs: String) -> (Character, String)? {
     if let f = xs.first {
         return (f, String(xs.suffix(from: xs.index(after: xs.startIndex))))
     } else {

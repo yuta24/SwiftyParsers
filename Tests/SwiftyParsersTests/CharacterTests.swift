@@ -3,13 +3,13 @@ import XCTest
 
 final class CharacterTests: XCTestCase {
     func testSeparete1() {
-        let result = separete("")
+        let result = separate("")
 
         XCTAssertNil(result)
     }
 
     func testSeparete2() {
-        let result = separete("abc")
+        let result = separate("abc")
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result?.0, "a")
