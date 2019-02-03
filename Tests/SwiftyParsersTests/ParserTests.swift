@@ -44,6 +44,44 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(r?.1, "3")
     }
 
+    func testApplicative3() {
+        let p1 = Parser<Character> {
+            return separate($0)
+        }
+        let p2 = Parser<Int> {
+            if let (x, xs) = separate($0), let i = Int(String(x)) {
+                return (i, xs)
+            } else {
+                return nil
+            }
+        }
+        let p3 = seqDiscardRight(p1, p2)
+
+        let r = p3.parse("a1c")
+        XCTAssertNotNil(r)
+        XCTAssertEqual(r?.0, "a")
+        XCTAssertEqual(r?.1, "c")
+    }
+
+    func testApplicative4() {
+        let p1 = Parser<Character> {
+            return separate($0)
+        }
+        let p2 = Parser<Int> {
+            if let (x, xs) = separate($0), let i = Int(String(x)) {
+                return (i, xs)
+            } else {
+                return nil
+            }
+        }
+        let p3 = seqDiscardLeft(p1, p2)
+
+        let r = p3.parse("a1c")
+        XCTAssertNotNil(r)
+        XCTAssertEqual(r?.0, 1)
+        XCTAssertEqual(r?.1, "c")
+    }
+
     func testMonad1() {
         let p1 = Parser<Character> {
             return separate($0)
