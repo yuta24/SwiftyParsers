@@ -8,5 +8,5 @@ env:
 osx_image: xcode10.1
 
 script: 
-  - swift build
-  - swift test
+  - swift package generate-xcodeproj
+  - xcodebuild test -project SwiftyParsers.xcodeproj -scheme SwiftyParsers-Package -destination 'platform=macOS,arch=x86_64' -enableCodeCoverage YES
