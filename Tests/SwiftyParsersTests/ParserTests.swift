@@ -103,10 +103,11 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(r?.1, "3")
     }
 
-    static var allTests = [
-        ("testFunctor1", testFunctor1),
-        ("testApplicative1", testApplicative1),
-        ("testApplicative2", testApplicative2),
-        ("testMonad1", testMonad1),
-    ]
+// TODO: For linux
+//    static var allTests = [
+//        ("testFunctor1", testFunctor1),
+//        ("testApplicative1", testApplicative1),
+//        ("testApplicative2", testApplicative2),
+//        ("testMonad1", testMonad1),
+//    ]
 }

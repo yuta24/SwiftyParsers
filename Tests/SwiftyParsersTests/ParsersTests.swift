@@ -72,17 +72,17 @@ final class ParsersTests: XCTestCase {
         XCTAssertNil(result)
     }
 
-    
-    static var allTests = [
-        ("testChar1", testChar1),
-        ("testChar2", testChar2),
-        ("testNotChar1", testNotChar1),
-        ("testNotChar2", testNotChar2),
-        ("testAny1", testAny1),
-        ("testAny2", testAny2),
-        ("testString1", testString1),
-        ("testString2", testString2),
-        ("testOctDigit1", testOctDigit1),
-        ("testOctDigit2", testOctDigit2),
-        ]
+// TODO: For linux
+//    static var allTests = [
+//        ("testChar1", testChar1),
+//        ("testChar2", testChar2),
+//        ("testNotChar1", testNotChar1),
+//        ("testNotChar2", testNotChar2),
+//        ("testAny1", testAny1),
+//        ("testAny2", testAny2),
+//        ("testString1", testString1),
+//        ("testString2", testString2),
+//        ("testOctDigit1", testOctDigit1),
+//        ("testOctDigit2", testOctDigit2),
+//        ]
 }

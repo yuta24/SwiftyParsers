@@ -2,9 +2,11 @@ import XCTest
 
 #if !os(macOS)
 public func allTests() -> [XCTestCaseEntry] {
-    return [
-        testCase(ParsersTests.allTests),
-        testCase(CharacterTests.allTests),
-    ]
+    return []
+// TODO: For linux
+//    return [
+//        testCase(ParsersTests.allTests),
+//        testCase(CharacterTests.allTests),
+//    ]
 }
 #endif

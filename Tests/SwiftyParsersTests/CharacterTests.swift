@@ -16,8 +16,9 @@ final class CharacterTests: XCTestCase {
         XCTAssertEqual(result?.1, "bc")
     }
 
-    static var allTests = [
-        ("testSeparete1", testSeparete1),
-        ("testSeparete2", testSeparete2),
-        ]
+// TODO: For linux
+//    static var allTests = [
+//        ("testSeparete1", testSeparete1),
+//        ("testSeparete2", testSeparete2),
+//        ]
 }
