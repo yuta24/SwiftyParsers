@@ -1,3 +1,4 @@
+import Foundation
 
 func separete(_ xs: String) -> (Character, String)? {
     if let f = xs.first {
