@@ -9,4 +9,6 @@ osx_image: xcode10.1
 
 script: 
   - swift package generate-xcodeproj
-  - xcodebuild test -project SwiftyParsers.xcodeproj -scheme SwiftyParsers-Package -destination 'platform=macOS,arch=x86_64' -enableCodeCoverage YES
+  - xcodebuild build test -project SwiftyParsers.xcodeproj -scheme SwiftyParsers-Package -destination 'platform=macOS,arch=x86_64' -enableCodeCoverage YES
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
