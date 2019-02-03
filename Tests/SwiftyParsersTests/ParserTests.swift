@@ -2,7 +2,7 @@ import XCTest
 @testable import SwiftyParsers
 
 final class ParserTests: XCTestCase {
-    func testMonadic1() {
+    func testFunctor1() {
         let p1 = Parser<Character> {
             return separate($0)
         }
@@ -16,7 +16,7 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(r?.1, "23")
     }
 
-    func testMonadic2() {
+    func testApplicative1() {
         let p1: Parser<Character> = pure("a")
 
         let r = p1.parse("123")
@@ -25,7 +25,7 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(r?.1, "123")
     }
 
-    func testMonadic3() {
+    func testApplicative2() {
         let p1 = Parser<Character> {
             return separate($0)
         }
@@ -44,7 +44,7 @@ final class ParserTests: XCTestCase {
         XCTAssertEqual(r?.1, "3")
     }
 
-    func testMonadic4() {
+    func testMonad1() {
         let p1 = Parser<Character> {
             return separate($0)
         }
@@ -66,9 +66,9 @@ final class ParserTests: XCTestCase {
     }
 
     static var allTests = [
-        ("testMonadic1", testMonadic1),
-        ("testMonadic2", testMonadic2),
-        ("testMonadic3", testMonadic3),
-        ("testMonadic4", testMonadic4),
+        ("testFunctor1", testFunctor1),
+        ("testApplicative1", testApplicative1),
+        ("testApplicative2", testApplicative2),
+        ("testMonad1", testMonad1),
     ]
 }

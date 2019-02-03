@@ -71,22 +71,21 @@ func flatMap<A, B>(_ p: Parser<A>, _ f: @escaping (A) -> Parser<B>) -> Parser<B>
     }
 }
 
-public extension Parser {
-    static func choice(_ p: Parser<A>, _ q: Parser<A>) -> Parser<A> {
-        return Parser {
-            return p.parse($0) ?? q.parse($0)
-        }
+// MARK: - Alternative
+func choice<A>(_ p: Parser<A>, _ q: Parser<A>) -> Parser<A> {
+    return Parser {
+        return p.parse($0) ?? q.parse($0)
     }
+}
 
-    static func some(_ p: Parser<A>) -> Parser<[A]> {
-        return flatMap(p, { (xs) -> Parser<[A]> in
-            return many(p)
-        })
-    }
+func some<A>(_ p: Parser<A>) -> Parser<[A]> {
+    return flatMap(p, { (xs) -> Parser<[A]> in
+        return many(p)
+    })
+}
 
-    static func many(_ p: Parser<A>) -> Parser<[A]> {
-        return Parser<[A]>.choice(
-            Parser<A>.some(p),
-            pure([]))
-    }
+func many<A>(_ p: Parser<A>) -> Parser<[A]> {
+    return choice(
+        some(p),
+        pure([]))
 }
