@@ -13,16 +13,25 @@ final class ParserTests: XCTestCase {
         }
     }
 
+    func testId() {
+        XCTAssertEqual(id(123), 123)
+    }
+
     func testFunctor1() {
         let p1 = cp
-        let p2 = fmap(p1) { (c) -> Int in
-            return Int(String(c)) ?? 0
+        let p2 = fmap(p1) { (c) -> Int? in
+            return Int(String(c))
         }
 
-        let r = p2.parse("123")
-        XCTAssertNotNil(r)
-        XCTAssertEqual(r?.0, 1)
-        XCTAssertEqual(r?.1, "23")
+        let r1 = p2.parse("123")
+        XCTAssertNotNil(r1)
+        XCTAssertEqual(r1?.0, 1)
+        XCTAssertEqual(r1?.1, "23")
+
+        let r2 = p2.parse("abc")
+        XCTAssertNotNil(r2)
+        XCTAssertEqual(r2?.0, nil)
+        XCTAssertEqual(r2?.1, "bc")
     }
 
     func testApplicative1() {
@@ -36,19 +45,21 @@ final class ParserTests: XCTestCase {
 
     func testApplicative2() {
         let p1 = cp
-        let p2 = Parser<(Character) -> Int> {
-            if let (x, xs) = separate($0), let _ = Int(String(x)) {
-                return ({ Int(String($0)) ?? 0  }, xs)
-            } else {
-                return nil
-            }
-        }
+        let p2: Parser<(Character) -> Int?> = pure({ Int(String($0))})
         let p3 = seq(p2, p1)
 
-        let r = p3.parse("123")
-        XCTAssertNotNil(r)
-        XCTAssertEqual(r?.0, 2)
-        XCTAssertEqual(r?.1, "3")
+        let r1 = p3.parse("123")
+        XCTAssertNotNil(r1)
+        XCTAssertEqual(r1?.0, 1)
+        XCTAssertEqual(r1?.1, "23")
+
+        let r2 = p3.parse("abc")
+        XCTAssertNotNil(r2)
+        XCTAssertNil(r2?.0)
+        XCTAssertEqual(r2?.1, "bc")
+
+        let r3 = p3.parse("")
+        XCTAssertNil(r3)
     }
 
     func testApplicative3() {
@@ -56,10 +67,13 @@ final class ParserTests: XCTestCase {
         let p2 = ip
         let p3 = seqDiscardRight(p1, p2)
 
-        let r = p3.parse("a1c")
-        XCTAssertNotNil(r)
-        XCTAssertEqual(r?.0, "a")
-        XCTAssertEqual(r?.1, "c")
+        let r1 = p3.parse("a1c")
+        XCTAssertNotNil(r1)
+        XCTAssertEqual(r1?.0, "a")
+        XCTAssertEqual(r1?.1, "c")
+
+        let r2 = p3.parse("abc")
+        XCTAssertNil(r2)
     }
 
     func testApplicative4() {
@@ -67,23 +81,31 @@ final class ParserTests: XCTestCase {
         let p2 = ip
         let p3 = seqDiscardLeft(p1, p2)
 
-        let r = p3.parse("a1c")
-        XCTAssertNotNil(r)
-        XCTAssertEqual(r?.0, 1)
-        XCTAssertEqual(r?.1, "c")
+        let r1 = p3.parse("a1c")
+        XCTAssertNotNil(r1)
+        XCTAssertEqual(r1?.0, 1)
+        XCTAssertEqual(r1?.1, "c")
+
+        let r2 = p3.parse("abc")
+        XCTAssertNil(r2)
     }
 
     func testMonad1() {
         let p1 = cp
-        let p2 = { (c: Character) -> Parser<Int> in
-            return pure(Int(String(c)) ?? 0)
+        let p2 = { (c: Character) -> Parser<Int?> in
+            return pure(Int(String(c)))
         }
         let p3 = flatMap(p1, p2)
 
-        let r = p3.parse("123")
-        XCTAssertNotNil(3)
-        XCTAssertEqual(r?.0, 1)
-        XCTAssertEqual(r?.1, "23")
+        let r1 = p3.parse("123")
+        XCTAssertNotNil(r1)
+        XCTAssertEqual(r1?.0, 1)
+        XCTAssertEqual(r1?.1, "23")
+
+        let r2 = p3.parse("abc")
+        XCTAssertNotNil(r2)
+        XCTAssertNil(r2?.0)
+        XCTAssertEqual(r2?.1, "bc")
     }
 
     func testAlternative1() {
