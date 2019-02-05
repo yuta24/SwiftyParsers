@@ -76,6 +76,12 @@ func seqLeft<A, B>(_ p: Parser<A>, _ q: Parser<B>) -> Parser<B> {
 }
 
 // MARK: - Alternative
+func empty<A>() -> Parser<A> {
+    return Parser<A> { _ in
+        return nil
+    }
+}
+
 func choice<A>(_ p: Parser<A>, _ q: Parser<A>) -> Parser<A> {
     return Parser {
         return p.parse($0) ?? q.parse($0)
