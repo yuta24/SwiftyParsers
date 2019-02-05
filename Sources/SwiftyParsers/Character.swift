@@ -2,7 +2,7 @@ import Foundation
 
 func separate(_ xs: String) -> (Character, String)? {
     if let f = xs.first {
-        return (f, String(xs.suffix(from: xs.index(after: xs.startIndex))))
+        return (f, String(xs.dropFirst()))
     } else {
         return nil
     }
