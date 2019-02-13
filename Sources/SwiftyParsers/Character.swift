@@ -8,16 +8,16 @@ func separate(_ xs: String) -> (Character, String)? {
     }
 }
 
+func isDigit(_ c: Character) -> Bool {
+    return ("0"..."9").contains(c)
+}
+
 func isOctDigit(_ c: Character) -> Bool {
     return ("0"..."7").contains(c)
 }
 
 func isHexDigit(_ c: Character) -> Bool {
-    return ("a"..."f").contains(c) || ("A"..."F").contains(c)
-}
-
-func isDigit(_ c: Character) -> Bool {
-    return ("0"..."9").contains(c)
+    return ("0"..."9").contains(c) || ("a"..."f").contains(c) || ("A"..."F").contains(c)
 }
 
 func isAlpha(_ c: Character) -> Bool {
