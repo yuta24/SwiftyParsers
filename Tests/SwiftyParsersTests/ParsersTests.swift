@@ -17,13 +17,13 @@ final class ParsersTests: XCTestCase {
     }
 
     func testNotChar1() {
-        let result = notChar("a").parse("bc")
+        let result = not("a").parse("bc")
 
         XCTAssertNotNil(result)
     }
 
     func testNotChar2() {
-        let result = notChar("b").parse("abc")
+        let result = not("b").parse("abc")
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result?.0, "a")
@@ -31,7 +31,7 @@ final class ParsersTests: XCTestCase {
     }
 
     func testAny1() {
-        let result = anyChar().parse("abc")
+        let result = any().parse("abc")
 
         XCTAssertNotNil(result)
         XCTAssertEqual(result?.0, "a")
@@ -39,7 +39,7 @@ final class ParsersTests: XCTestCase {
     }
 
     func testAny2() {
-        let result = anyChar().parse("")
+        let result = any().parse("")
 
         XCTAssertNil(result)
     }

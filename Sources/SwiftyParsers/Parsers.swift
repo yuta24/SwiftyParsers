@@ -10,13 +10,13 @@ public func char(_ x: Character) -> Parser<Character> {
     return satisfy({ x == $0 })
 }
 
-public func notChar(_ c: Character) -> Parser<Character> {
+public func not(_ c: Character) -> Parser<Character> {
     return satisfy({
         return c != $0
     })
 }
 
-public func anyChar() -> Parser<Character> {
+public func any() -> Parser<Character> {
     return satisfy({ _ in
         return true
     })
