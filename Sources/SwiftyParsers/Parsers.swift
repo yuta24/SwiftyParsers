@@ -6,10 +6,8 @@ public func satisfy(_ p: @escaping (Character) -> Bool) -> Parser<Character> {
     })
 }
 
-public func satisfyRange(_ a: Character, _ z: Character) -> Parser<Character> {
-    return satisfy({
-        return a <= $0 && $0 <= z
-    })
+public func char(_ x: Character) -> Parser<Character> {
+    return satisfy({ x == $0 })
 }
 
 public func notChar(_ c: Character) -> Parser<Character> {
@@ -18,9 +16,27 @@ public func notChar(_ c: Character) -> Parser<Character> {
     })
 }
 
-public func any() -> Parser<Character> {
+public func anyChar() -> Parser<Character> {
     return satisfy({ _ in
         return true
+    })
+}
+
+public func string(_ str: String) -> Parser<String> {
+    if let (x, xs) = separate(str) {
+        return char(x) >>- ({ _ in
+            string(xs) >>- ({ _ in
+                return pure(str)
+            })
+        })
+    } else {
+        return pure("")
+    }
+}
+
+public func satisfyRange(_ a: Character, _ z: Character) -> Parser<Character> {
+    return satisfy({
+        return a <= $0 && $0 <= z
     })
 }
 
@@ -42,10 +58,6 @@ public func newline() -> Parser<Character> {
 
 public func space() -> Parser<Character> {
     return satisfy(isChar(" "))
-}
-
-public func char(_ x: Character) -> Parser<Character> {
-    return satisfy({ x == $0 })
 }
 
 public func digit() -> Parser<Character> {
@@ -75,18 +87,6 @@ public func word() -> Parser<String> {
         })
     })
     return r <|> pure("")
-}
-
-public func string(_ str: String) -> Parser<String> {
-    if let (x, xs) = separate(str) {
-        return char(x) >>- ({ _ in
-            string(xs) >>- ({ _ in
-                return pure(str)
-            })
-        })
-    } else {
-        return pure("")
-    }
 }
 
 public func ident() -> Parser<String> {
