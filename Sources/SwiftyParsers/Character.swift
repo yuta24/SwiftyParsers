@@ -41,3 +41,7 @@ func isChar(_ c: Character) -> (Character) -> Bool {
         return c == $0
     }
 }
+
+func isSpace(_ c: Character) -> Bool {
+    return c == " " || c == "\n" || c == "\t" || c == "\r"
+}

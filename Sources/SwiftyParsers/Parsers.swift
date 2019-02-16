@@ -1,8 +1,8 @@
 import Foundation
 
 public func satisfy(_ p: @escaping (Character) -> Bool) -> Parser<Character> {
-    return item() >>- ({ (x) -> Parser<Character> in
-        return p(x) ? pure(x) : zero()
+    return item() >>= ({ (x) -> Parser<Character> in
+        return p(x) ? pure(x) : empty()
     })
 }
 
@@ -24,14 +24,30 @@ public func any() -> Parser<Character> {
 
 public func string(_ str: String) -> Parser<String> {
     if let (x, xs) = separate(str) {
-        return char(x) >>- ({ _ in
-            string(xs) >>- ({ _ in
+        return char(x) >>= ({ _ in
+            string(xs) >>= ({ _ in
                 return pure(str)
             })
         })
     } else {
         return pure("")
     }
+}
+
+public func oneOf(_ xs: String) -> Parser<Character> {
+    return satisfy({ xs.contains($0) })
+}
+
+public func noneOf(_ xs: String) -> Parser<Character> {
+    return satisfy({ !xs.contains($0) })
+}
+
+public func spaces() -> Parser<()> {
+    return some(satisfy(isSpace)) >>= ({ _ in pure(()) })
+}
+
+public func space() -> Parser<Character> {
+    return satisfy(isSpace)
 }
 
 public func satisfyRange(_ a: Character, _ z: Character) -> Parser<Character> {
@@ -56,10 +72,6 @@ public func newline() -> Parser<Character> {
     return satisfy(isChar("\n"))
 }
 
-public func space() -> Parser<Character> {
-    return satisfy(isChar(" "))
-}
-
 public func digit() -> Parser<Character> {
     return satisfy(isDigit)
 }
@@ -81,8 +93,8 @@ public func alphanum() -> Parser<Character> {
 }
 
 public func word() -> Parser<String> {
-    let r = letter() >>- ({ (x) in
-        word() >>- ({ (xs) in
+    let r = letter() >>= ({ (x) in
+        word() >>= ({ (xs) in
             return pure(String(x) + xs)
         })
     })
@@ -90,26 +102,26 @@ public func word() -> Parser<String> {
 }
 
 public func ident() -> Parser<String> {
-    return lower() >>- ({ (x) in
-        many(alphanum()) >>- ({ (xs) in
+    return lower() >>= ({ (x) in
+        many(alphanum()) >>= ({ (xs) in
             return pure(String(x) + String(xs))
         })
     })
 }
 
 public func nat() -> Parser<Int> {
-    return many1(digit()) >>- ({ (xs) in
+    return some(digit()) >>= ({ (xs) in
         if let r = Int(String(xs)) {
             return pure(r)
         } else {
-            return zero()
+            return empty()
         }
     })
 }
 
 public func int() -> Parser<Int> {
-    let r = char("-") >>- ({ _ in
-        nat() >>- ({ n in
+    let r = char("-") >>= ({ _ in
+        nat() >>= ({ n in
             return pure(-n)
         })
     })
@@ -117,12 +129,12 @@ public func int() -> Parser<Int> {
 }
 
 public func ints() -> Parser<[Int]> {
-    return char("[") >>- ({ _ in
-        int() >>- ({ n in
-            many(char(",") >>- ({ _ in
+    return char("[") >>= ({ _ in
+        int() >>= ({ n in
+            many(char(",") >>= ({ _ in
                 return int()
-            })) >>- ({ ns in
-                char("]") >>- ({ _ in
+            })) >>= ({ ns in
+                char("]") >>= ({ _ in
                     return pure([n] + ns)
                 })
             })
@@ -132,10 +144,4 @@ public func ints() -> Parser<[Int]> {
 
 public func number() -> Parser<Int> {
     return nat() <|> pure(0)
-}
-
-public func spaces() -> Parser<()> {
-    return many1(satisfy({
-        return $0 == " " || $0 == "\n" || $0 == "\t"
-    })) >>- ({ _ in pure(()) })
 }
