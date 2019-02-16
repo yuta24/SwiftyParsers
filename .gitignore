@@ -1,2 +1,5 @@
 .build/
 *.xcodeproj
+
+/.bundle/
+/vendor/bundle
