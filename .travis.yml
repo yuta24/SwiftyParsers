@@ -13,7 +13,6 @@ notifications:
 osx_image: xcode11.2
 
 script:
-  - swift package generate-xcodeproj
-  - xcodebuild build test -project SwiftyParsers.xcodeproj -scheme SwiftyParsers-Package -destination 'platform=macOS,arch=x86_64' -enableCodeCoverage YES
+  - swift test --enable-code-coverage
 after_success:
   - bash <(curl -s https://codecov.io/bash)
