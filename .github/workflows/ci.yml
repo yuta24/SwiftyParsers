@@ -6,9 +6,21 @@ jobs:
   build:
 
     runs-on: macOS-latest
+    strategy:
+      matrix:
+        xcode: ["11.1", "11.2", "11.3"]
 
     steps:
     - uses: actions/checkout@v1
+    - name: Set Xcode
+      run: |
+        echo "Available Xcode versions:"
+        ls /Applications | grep Xcode
+        echo "Choosing Xcode_${{ matrix.xcode }}.app"
+        sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
+        xcodebuild -version
+        swift --version
+        swift package --version
     - name: Build
       run: swift build -v
     - name: Run tests
